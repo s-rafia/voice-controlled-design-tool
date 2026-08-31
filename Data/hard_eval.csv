@@ -1,0 +1,61 @@
+phrase,label
+move the canvas to the right,PAN
+scroll the board up a little,PAN
+let me see this up close,ZOOM_IN
+zoom right in on that,ZOOM_IN
+i need a broader view,ZOOM_OUT
+back off a little from the canvas,ZOOM_OUT
+fit it all in the window,ZOOM_FIT
+show me everything at once,ZOOM_FIT
+put the zoom back to one hundred,ZOOM_RESET
+go back to real size,ZOOM_RESET
+grab every layer,SELECT_ALL
+select the lot,SELECT_ALL
+clear everything i selected,DESELECT
+unselect that,DESELECT
+select all the pink ones,SELECT_BY_COLOR
+grab every green box,SELECT_BY_COLOR
+select all the ellipses,SELECT_BY_TYPE
+grab every image layer,SELECT_BY_TYPE
+add the red square too,ADD_TO_SELECTION
+also take this one,ADD_TO_SELECTION
+move this box up a little,MOVE_OBJECT
+nudge the selected shape left,MOVE_OBJECT
+make the circle much bigger,RESIZE
+shrink this down a bit,RESIZE
+turn this thirty degrees,ROTATE
+rotate the shape the other way,ROTATE
+mirror this image horizontally,FLIP
+flip that shape over vertically,FLIP
+move this shape up one layer,BRING_FORWARD
+bring this in front of the box,BRING_FORWARD
+move this shape down one layer,SEND_BACKWARD
+put this behind the circle,SEND_BACKWARD
+group all of these,GROUP
+put these three together,GROUP
+split these back apart,UNGROUP
+undo this grouping,UNGROUP
+lock the bottom layer,LOCK_LAYER
+unlock this shape,LOCK_LAYER
+hide the second layer,TOGGLE_VISIBILITY
+make the image visible again,TOGGLE_VISIBILITY
+give me another one of these,DUPLICATE
+duplicate this box twice,DUPLICATE
+delete this circle,DELETE
+get rid of the selected shapes,DELETE
+take back that last change,UNDO
+undo the last thing i did,UNDO
+redo the thing i just undid,REDO
+put that change back,REDO
+line these up on the right,ALIGN
+center this in the frame,ALIGN
+spread these evenly across,DISTRIBUTE
+make the spacing between them equal,DISTRIBUTE
+draw a big circle here,CREATE_SHAPE
+put a square on the canvas,CREATE_SHAPE
+add some text here,CREATE_TEXT
+create a title text box,CREATE_TEXT
+make this one dark blue,SET_FILL_COLOR
+change the fill to light gray,SET_FILL_COLOR
+make this sixty percent transparent,SET_OPACITY
+fade the image a little,SET_OPACITY

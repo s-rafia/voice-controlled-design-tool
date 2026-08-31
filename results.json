@@ -1,0 +1,14 @@
+{
+  "test_accuracy": 0.8536585365853658,
+  "test_macro_f1": 0.8580952380952381,
+  "heldout_accuracy": 0.9333333333333333,
+  "heldout_macro_f1": 0.9288888888888889,
+  "best_epoch": 12,
+  "stopped_at_epoch": 17,
+  "confidence_threshold": 0.4,
+  "n_train": 380,
+  "n_val": 82,
+  "n_test": 82,
+  "n_heldout": 60,
+  "n_labels": 30
+}

@@ -1,0 +1,545 @@
+phrase,label
+pan the canvas to the left,PAN
+pan the canvas right,PAN
+move the canvas up,PAN
+move the canvas down a bit,PAN
+shift the canvas over to the left,PAN
+scroll the canvas down,PAN
+drag the canvas to the right,PAN
+pan up a little,PAN
+pan down,PAN
+move the view to the left,PAN
+shift the view right,PAN
+slide the canvas over,PAN
+pan across to the right side,PAN
+move the whole canvas up,PAN
+scroll over to the left,PAN
+push the canvas down,PAN
+pan the board up slightly,PAN
+move the artboard view down,PAN
+shift the workspace to the left,PAN
+pan the canvas up,PAN
+zoom in,ZOOM_IN
+zoom in a little,ZOOM_IN
+zoom in closer,ZOOM_IN
+zoom in on this,ZOOM_IN
+i want a closer look at this,ZOOM_IN
+give me a closer look,ZOOM_IN
+give me a tighter view of this,ZOOM_IN
+narrow the view,ZOOM_IN
+make the view narrower,ZOOM_IN
+zoom in two hundred percent,ZOOM_IN
+magnify this,ZOOM_IN
+zoom in on the selection,ZOOM_IN
+tighten the view,ZOOM_IN
+increase the zoom,ZOOM_IN
+zoom in more,ZOOM_IN
+bring me closer to this,ZOOM_IN
+make everything look bigger on screen,ZOOM_IN
+get closer to the canvas,ZOOM_IN
+zoom out,ZOOM_OUT
+zoom out a bit,ZOOM_OUT
+zoom out more,ZOOM_OUT
+give me a wider view,ZOOM_OUT
+give me a broader look of this,ZOOM_OUT
+i want a wider view of this,ZOOM_OUT
+widen the view,ZOOM_OUT
+make the view broader,ZOOM_OUT
+pull back from the canvas,ZOOM_OUT
+back out a little,ZOOM_OUT
+decrease the zoom,ZOOM_OUT
+zoom out to fifty percent,ZOOM_OUT
+show me more of the canvas,ZOOM_OUT
+make everything look smaller on screen,ZOOM_OUT
+give me more room to see,ZOOM_OUT
+broaden the view,ZOOM_OUT
+reduce the zoom level,ZOOM_OUT
+step back from the canvas,ZOOM_OUT
+fit everything on screen,ZOOM_FIT
+zoom to fit,ZOOM_FIT
+fit the whole design in the view,ZOOM_FIT
+fit all of it on screen,ZOOM_FIT
+fit the canvas to the window,ZOOM_FIT
+show the entire artboard,ZOOM_FIT
+zoom to fit all,ZOOM_FIT
+fit everything in the window,ZOOM_FIT
+fit the frame to the screen,ZOOM_FIT
+show me the whole design,ZOOM_FIT
+fit the selection to the screen,ZOOM_FIT
+zoom so i can see everything,ZOOM_FIT
+fit the page on screen,ZOOM_FIT
+bring everything into view,ZOOM_FIT
+fit the whole board,ZOOM_FIT
+show all of it at once,ZOOM_FIT
+fit the artboard in the window,ZOOM_FIT
+scale the view to fit everything,ZOOM_FIT
+reset the zoom,ZOOM_RESET
+zoom to one hundred percent,ZOOM_RESET
+actual size,ZOOM_RESET
+go back to actual size,ZOOM_RESET
+reset the view,ZOOM_RESET
+set the zoom to one hundred,ZOOM_RESET
+back to normal zoom,ZOOM_RESET
+show it at real size,ZOOM_RESET
+reset the zoom level,ZOOM_RESET
+default zoom please,ZOOM_RESET
+put the zoom back to normal,ZOOM_RESET
+view at actual size,ZOOM_RESET
+one hundred percent zoom,ZOOM_RESET
+return to the normal view,ZOOM_RESET
+normal size view,ZOOM_RESET
+restore the original zoom,ZOOM_RESET
+zoom back to default,ZOOM_RESET
+set the view to actual size,ZOOM_RESET
+select all,SELECT_ALL
+select everything,SELECT_ALL
+select everything on the canvas,SELECT_ALL
+highlight everything,SELECT_ALL
+select all the layers,SELECT_ALL
+choose everything on this page,SELECT_ALL
+select all objects,SELECT_ALL
+pick everything,SELECT_ALL
+select the whole canvas,SELECT_ALL
+select all elements,SELECT_ALL
+i want everything selected,SELECT_ALL
+select every layer,SELECT_ALL
+mark everything,SELECT_ALL
+select all of it,SELECT_ALL
+select all items on the artboard,SELECT_ALL
+grab everything on the board,SELECT_ALL
+select the entire canvas,SELECT_ALL
+select all layers at once,SELECT_ALL
+deselect,DESELECT
+deselect everything,DESELECT
+clear the selection,DESELECT
+unselect all,DESELECT
+never mind the selection,DESELECT
+drop the selection,DESELECT
+deselect all of it,DESELECT
+nothing selected please,DESELECT
+clear what is selected,DESELECT
+cancel the selection,DESELECT
+let go of the selection,DESELECT
+unselect everything,DESELECT
+remove the selection,DESELECT
+deselect this,DESELECT
+empty the selection,DESELECT
+forget the selection,DESELECT
+clear selection please,DESELECT
+deselect all layers,DESELECT
+select the blue ones,SELECT_BY_COLOR
+select all red boxes,SELECT_BY_COLOR
+highlight the green shapes,SELECT_BY_COLOR
+choose all yellow boxes,SELECT_BY_COLOR
+grab everything that is purple,SELECT_BY_COLOR
+select the orange shapes,SELECT_BY_COLOR
+select blue only,SELECT_BY_COLOR
+pick all the red ones,SELECT_BY_COLOR
+select everything green,SELECT_BY_COLOR
+get all the yellow shapes,SELECT_BY_COLOR
+select all the purple boxes,SELECT_BY_COLOR
+grab the orange ones,SELECT_BY_COLOR
+select all blue shapes,SELECT_BY_COLOR
+i want the red ones selected,SELECT_BY_COLOR
+highlight all green boxes,SELECT_BY_COLOR
+select everything that is yellow,SELECT_BY_COLOR
+choose the purple shapes,SELECT_BY_COLOR
+select the orange ones please,SELECT_BY_COLOR
+select all the black shapes,SELECT_BY_COLOR
+select every white element,SELECT_BY_COLOR
+select all the text layers,SELECT_BY_TYPE
+select every text box,SELECT_BY_TYPE
+select all the images,SELECT_BY_TYPE
+grab all the rectangles,SELECT_BY_TYPE
+select all the circles,SELECT_BY_TYPE
+choose all the frames,SELECT_BY_TYPE
+select every line,SELECT_BY_TYPE
+select all the groups,SELECT_BY_TYPE
+highlight all the text,SELECT_BY_TYPE
+select all image layers,SELECT_BY_TYPE
+pick all the shapes,SELECT_BY_TYPE
+select every rectangle on the page,SELECT_BY_TYPE
+select all the icons,SELECT_BY_TYPE
+grab all the text elements,SELECT_BY_TYPE
+select all vector layers,SELECT_BY_TYPE
+choose every image,SELECT_BY_TYPE
+select all the buttons,SELECT_BY_TYPE
+select every frame on the canvas,SELECT_BY_TYPE
+add this one to the selection,ADD_TO_SELECTION
+also select this one,ADD_TO_SELECTION
+include this shape too,ADD_TO_SELECTION
+add that to what is selected,ADD_TO_SELECTION
+select this one as well,ADD_TO_SELECTION
+add this layer to the selection,ADD_TO_SELECTION
+keep this selected too,ADD_TO_SELECTION
+and this one too,ADD_TO_SELECTION
+add the circle to the selection,ADD_TO_SELECTION
+also grab this one,ADD_TO_SELECTION
+include that in the selection,ADD_TO_SELECTION
+select this one in addition,ADD_TO_SELECTION
+add one more to the selection,ADD_TO_SELECTION
+also include the blue box,ADD_TO_SELECTION
+add that shape as well,ADD_TO_SELECTION
+extend the selection to this one,ADD_TO_SELECTION
+throw this one in too,ADD_TO_SELECTION
+add this to what i already have selected,ADD_TO_SELECTION
+move this shape to the left,MOVE_OBJECT
+move the selected shape right,MOVE_OBJECT
+nudge it up,MOVE_OBJECT
+nudge this down a little,MOVE_OBJECT
+move it to the right a bit,MOVE_OBJECT
+shift this shape up,MOVE_OBJECT
+move the box down,MOVE_OBJECT
+push this to the left,MOVE_OBJECT
+move the selection up ten pixels,MOVE_OBJECT
+slide this shape to the right,MOVE_OBJECT
+move this element down,MOVE_OBJECT
+drag this up a bit,MOVE_OBJECT
+move the rectangle left,MOVE_OBJECT
+nudge the selection right,MOVE_OBJECT
+move it up slightly,MOVE_OBJECT
+shift the selected layer down,MOVE_OBJECT
+move this shape over to the left,MOVE_OBJECT
+reposition this a little higher,MOVE_OBJECT
+make this shape bigger,RESIZE
+make this shape smaller,RESIZE
+resize this to be larger,RESIZE
+shrink this shape,RESIZE
+scale this up,RESIZE
+scale it down,RESIZE
+make the box twice as big,RESIZE
+make this rectangle wider,RESIZE
+make this taller,RESIZE
+reduce the size of this shape,RESIZE
+increase the size of the selection,RESIZE
+resize the frame to be smaller,RESIZE
+enlarge this shape,RESIZE
+make this element narrower,RESIZE
+scale the selection up by twenty percent,RESIZE
+shrink the image a little,RESIZE
+make this half the size,RESIZE
+stretch this shape wider,RESIZE
+rotate this ninety degrees,ROTATE
+turn this shape clockwise,ROTATE
+rotate it to the left,ROTATE
+spin this around,ROTATE
+rotate the box forty five degrees,ROTATE
+turn this counterclockwise,ROTATE
+rotate this a little to the right,ROTATE
+tilt this shape,ROTATE
+rotate the selection one eighty,ROTATE
+turn the image upside down,ROTATE
+rotate this back to zero,ROTATE
+angle this shape slightly,ROTATE
+rotate everything selected,ROTATE
+turn this ninety degrees right,ROTATE
+rotate the text,ROTATE
+spin the icon clockwise,ROTATE
+rotate this by ten degrees,ROTATE
+straighten this shape out,ROTATE
+flip this horizontally,FLIP
+flip it vertically,FLIP
+mirror this shape,FLIP
+flip the image left to right,FLIP
+flip this upside down,FLIP
+mirror the selection horizontally,FLIP
+flip this across the vertical axis,FLIP
+reverse this shape horizontally,FLIP
+flip the icon,FLIP
+mirror it the other way,FLIP
+flip this top to bottom,FLIP
+flip the whole group horizontally,FLIP
+mirror this layer vertically,FLIP
+flip that one over,FLIP
+make a mirror image of this,FLIP
+flip the arrow around,FLIP
+flip vertical,FLIP
+flip horizontal,FLIP
+bring this shape forward,BRING_FORWARD
+move this layer up one level,BRING_FORWARD
+bring it to the front,BRING_FORWARD
+put this on top,BRING_FORWARD
+raise this layer,BRING_FORWARD
+move this in front of the other one,BRING_FORWARD
+bring this forward one step,BRING_FORWARD
+send this to the front,BRING_FORWARD
+move this up in the layer order,BRING_FORWARD
+put this above the rest,BRING_FORWARD
+bring the text in front of the image,BRING_FORWARD
+raise this to the top,BRING_FORWARD
+move this layer forward,BRING_FORWARD
+bring this up a level,BRING_FORWARD
+layer this on top,BRING_FORWARD
+push this shape forward,BRING_FORWARD
+bring this to the very front,BRING_FORWARD
+move this one layer up,BRING_FORWARD
+send this shape backward,SEND_BACKWARD
+move this layer down one level,SEND_BACKWARD
+send it to the back,SEND_BACKWARD
+put this behind the others,SEND_BACKWARD
+lower this layer,SEND_BACKWARD
+move this behind the image,SEND_BACKWARD
+send this back one step,SEND_BACKWARD
+push this to the back,SEND_BACKWARD
+move this down in the layer order,SEND_BACKWARD
+put this underneath,SEND_BACKWARD
+send the rectangle behind the text,SEND_BACKWARD
+drop this to the bottom layer,SEND_BACKWARD
+move this layer backward,SEND_BACKWARD
+send this down a level,SEND_BACKWARD
+layer this underneath,SEND_BACKWARD
+send this to the very back,SEND_BACKWARD
+tuck this behind the others,SEND_BACKWARD
+move this one layer down,SEND_BACKWARD
+group these together,GROUP
+group the selected shapes,GROUP
+put these in a group,GROUP
+combine these into one group,GROUP
+group them,GROUP
+make these a group,GROUP
+group everything selected,GROUP
+bundle these together,GROUP
+group these two shapes,GROUP
+wrap these in a group,GROUP
+group the selection,GROUP
+turn these into a group,GROUP
+join these into a group,GROUP
+group all of the selected layers,GROUP
+put all of these together in one group,GROUP
+group this set of shapes,GROUP
+make a group out of these,GROUP
+group them up,GROUP
+ungroup this,UNGROUP
+ungroup these shapes,UNGROUP
+break this group apart,UNGROUP
+split this group up,UNGROUP
+separate these shapes,UNGROUP
+ungroup the selection,UNGROUP
+take this group apart,UNGROUP
+release this group,UNGROUP
+break these apart,UNGROUP
+dissolve the group,UNGROUP
+ungroup everything,UNGROUP
+unbundle these shapes,UNGROUP
+separate the grouped layers,UNGROUP
+split this into individual shapes,UNGROUP
+remove the group,UNGROUP
+ungroup that one,UNGROUP
+break up this group,UNGROUP
+take these out of the group,UNGROUP
+lock this layer,LOCK_LAYER
+lock this shape so it does not move,LOCK_LAYER
+lock the background,LOCK_LAYER
+freeze this layer,LOCK_LAYER
+lock the selection,LOCK_LAYER
+unlock this layer,LOCK_LAYER
+unlock the background,LOCK_LAYER
+lock all the text layers,LOCK_LAYER
+make this layer uneditable,LOCK_LAYER
+lock this in place,LOCK_LAYER
+unlock everything,LOCK_LAYER
+lock these shapes,LOCK_LAYER
+keep this layer from moving,LOCK_LAYER
+unlock the selected layer,LOCK_LAYER
+lock the frame,LOCK_LAYER
+lock this so i do not move it by accident,LOCK_LAYER
+unlock the image layer,LOCK_LAYER
+toggle the lock on this layer,LOCK_LAYER
+hide this layer,TOGGLE_VISIBILITY
+show this layer,TOGGLE_VISIBILITY
+hide the background,TOGGLE_VISIBILITY
+make this shape invisible,TOGGLE_VISIBILITY
+unhide the text layer,TOGGLE_VISIBILITY
+hide the selected shapes,TOGGLE_VISIBILITY
+show the hidden layers,TOGGLE_VISIBILITY
+turn off the visibility of this layer,TOGGLE_VISIBILITY
+hide the image,TOGGLE_VISIBILITY
+make this visible again,TOGGLE_VISIBILITY
+hide everything except this,TOGGLE_VISIBILITY
+show all layers,TOGGLE_VISIBILITY
+hide that one for now,TOGGLE_VISIBILITY
+reveal this layer,TOGGLE_VISIBILITY
+toggle visibility on this shape,TOGGLE_VISIBILITY
+hide the top layer,TOGGLE_VISIBILITY
+show the bottom layer,TOGGLE_VISIBILITY
+make this layer show up again,TOGGLE_VISIBILITY
+duplicate this shape,DUPLICATE
+make a copy of this,DUPLICATE
+copy this one,DUPLICATE
+duplicate the selection,DUPLICATE
+clone this shape,DUPLICATE
+make another one of these,DUPLICATE
+duplicate this layer,DUPLICATE
+give me a copy of this box,DUPLICATE
+duplicate these three times,DUPLICATE
+make a duplicate right next to it,DUPLICATE
+replicate this shape,DUPLICATE
+duplicate everything selected,DUPLICATE
+create a copy of this frame,DUPLICATE
+make two more of these,DUPLICATE
+duplicate that one,DUPLICATE
+copy this element,DUPLICATE
+make a duplicate,DUPLICATE
+clone the selected layers,DUPLICATE
+delete this shape,DELETE
+remove this layer,DELETE
+delete the selection,DELETE
+get rid of this,DELETE
+erase this shape,DELETE
+delete these,DELETE
+remove the selected shapes,DELETE
+throw this away,DELETE
+delete that box,DELETE
+clear this element off the canvas,DELETE
+remove all of the selected layers,DELETE
+delete this text,DELETE
+get rid of that one,DELETE
+wipe this shape out,DELETE
+delete everything selected,DELETE
+remove this image,DELETE
+take this off the canvas,DELETE
+delete the frame,DELETE
+undo that,UNDO
+undo the last thing,UNDO
+go back one step,UNDO
+undo,UNDO
+take that back,UNDO
+revert the last change,UNDO
+undo my last action,UNDO
+that was wrong undo it,UNDO
+step back one action,UNDO
+undo the last two steps,UNDO
+reverse that change,UNDO
+cancel what i just did,UNDO
+undo please,UNDO
+roll that back,UNDO
+undo the last edit,UNDO
+i did not mean that undo it,UNDO
+back up one action,UNDO
+undo what i just did,UNDO
+redo that,REDO
+redo the last action,REDO
+put it back,REDO
+redo,REDO
+bring that change back,REDO
+never mind redo it,REDO
+redo what i undid,REDO
+step forward one action,REDO
+reapply that change,REDO
+redo the last two steps,REDO
+go forward one step,REDO
+redo please,REDO
+restore that change,REDO
+redo my last undo,REDO
+bring back the last edit,REDO
+reverse the undo,REDO
+redo the change i undid,REDO
+move forward one action,REDO
+align these to the left,ALIGN
+align the selected shapes to the right,ALIGN
+center these horizontally,ALIGN
+align them along the top,ALIGN
+align these to the bottom,ALIGN
+center this on the canvas,ALIGN
+line these up on the left edge,ALIGN
+align the text to the center,ALIGN
+center these vertically,ALIGN
+align everything to the middle,ALIGN
+line up these boxes along the top,ALIGN
+align this shape to the center of the frame,ALIGN
+align the selection left,ALIGN
+put these in a straight line on the right,ALIGN
+center the group horizontally,ALIGN
+align these along their bottom edges,ALIGN
+line this up with the top edge,ALIGN
+center everything on the artboard,ALIGN
+distribute these evenly,DISTRIBUTE
+space these out equally,DISTRIBUTE
+distribute the selection horizontally,DISTRIBUTE
+spread these apart evenly,DISTRIBUTE
+even out the spacing between these,DISTRIBUTE
+distribute these vertically,DISTRIBUTE
+make the gaps between these equal,DISTRIBUTE
+space these boxes evenly across,DISTRIBUTE
+distribute them with equal spacing,DISTRIBUTE
+give these the same spacing,DISTRIBUTE
+spread these out horizontally,DISTRIBUTE
+even spacing between the shapes please,DISTRIBUTE
+distribute the selected layers vertically,DISTRIBUTE
+equalize the gaps,DISTRIBUTE
+space these apart the same amount,DISTRIBUTE
+distribute evenly across the frame,DISTRIBUTE
+put equal space between these,DISTRIBUTE
+even out the distance between these shapes,DISTRIBUTE
+draw a rectangle,CREATE_SHAPE
+add a circle,CREATE_SHAPE
+create a square here,CREATE_SHAPE
+make a new rectangle,CREATE_SHAPE
+draw a line,CREATE_SHAPE
+add an ellipse,CREATE_SHAPE
+insert a triangle,CREATE_SHAPE
+create a rounded rectangle,CREATE_SHAPE
+draw a box on the canvas,CREATE_SHAPE
+add a new shape,CREATE_SHAPE
+make a circle in the middle,CREATE_SHAPE
+draw a small square,CREATE_SHAPE
+insert a rectangle here,CREATE_SHAPE
+create a line across,CREATE_SHAPE
+add a frame,CREATE_SHAPE
+draw an arrow,CREATE_SHAPE
+make a new ellipse,CREATE_SHAPE
+put a rectangle on the artboard,CREATE_SHAPE
+add a text box,CREATE_TEXT
+insert some text here,CREATE_TEXT
+create a text layer,CREATE_TEXT
+add a heading,CREATE_TEXT
+write some text on the canvas,CREATE_TEXT
+put a label here,CREATE_TEXT
+add a title,CREATE_TEXT
+insert a text field,CREATE_TEXT
+create a new text element,CREATE_TEXT
+add text to this frame,CREATE_TEXT
+make a text box here,CREATE_TEXT
+type something here,CREATE_TEXT
+add a caption,CREATE_TEXT
+insert a paragraph of text,CREATE_TEXT
+put some words on the canvas,CREATE_TEXT
+add a text layer on top,CREATE_TEXT
+create a headline,CREATE_TEXT
+new text box please,CREATE_TEXT
+make this blue,SET_FILL_COLOR
+change the fill to red,SET_FILL_COLOR
+fill this shape with green,SET_FILL_COLOR
+set the color to yellow,SET_FILL_COLOR
+make this shape purple,SET_FILL_COLOR
+change this to orange,SET_FILL_COLOR
+color this box black,SET_FILL_COLOR
+make the background white,SET_FILL_COLOR
+set the fill color to light blue,SET_FILL_COLOR
+paint this shape green,SET_FILL_COLOR
+change the fill of this to pink,SET_FILL_COLOR
+make this one gray,SET_FILL_COLOR
+turn this shape red,SET_FILL_COLOR
+give this a blue fill,SET_FILL_COLOR
+change the color of the text to white,SET_FILL_COLOR
+fill it with dark green,SET_FILL_COLOR
+set this shape color to teal,SET_FILL_COLOR
+recolor this to yellow,SET_FILL_COLOR
+make this fifty percent transparent,SET_OPACITY
+lower the opacity of this shape,SET_OPACITY
+set the opacity to twenty percent,SET_OPACITY
+make this more transparent,SET_OPACITY
+increase the opacity,SET_OPACITY
+make this shape fully opaque,SET_OPACITY
+fade this out a bit,SET_OPACITY
+drop the opacity down,SET_OPACITY
+make this see through,SET_OPACITY
+set the transparency to seventy five percent,SET_OPACITY
+reduce the opacity of the image,SET_OPACITY
+make this less transparent,SET_OPACITY
+turn the opacity all the way up,SET_OPACITY
+make this slightly faded,SET_OPACITY
+set this layer to thirty percent opacity,SET_OPACITY
+make the background more see through,SET_OPACITY
+raise the opacity a little,SET_OPACITY
+bring the opacity down to ten percent,SET_OPACITY
