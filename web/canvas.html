@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Voice-controlled design canvas</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: #f4f4f5;
+    color: #18181b;
+    display: flex;
+    height: 100vh;
+  }
+
+  #canvasArea {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    min-width: 0;
+  }
+
+  #stage {
+    flex: 1;
+    background: #ffffff;
+    border: 1px solid #d4d4d8;
+    border-radius: 6px;
+    display: block;
+    width: 100%;
+    cursor: default;
+  }
+
+  #panel {
+    width: 360px;
+    border-left: 1px solid #d4d4d8;
+    background: #ffffff;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  h1 { font-size: 15px; margin: 0; }
+  .hint { font-size: 12px; color: #71717a; margin: 0; line-height: 1.5; }
+
+  #cmd {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    border: 1px solid #d4d4d8;
+    border-radius: 6px;
+  }
+  #cmd:focus { outline: 2px solid #6366f1; outline-offset: -1px; }
+
+  #status {
+    font-size: 12px;
+    color: #52525b;
+    padding: 8px 10px;
+    background: #fafafa;
+    border: 1px solid #e4e4e7;
+    border-radius: 6px;
+  }
+
+  #log {
+    flex: 1;
+    overflow-y: auto;
+    font-size: 12px;
+    border-top: 1px solid #e4e4e7;
+    padding-top: 10px;
+  }
+  .entry { margin-bottom: 12px; line-height: 1.5; }
+  .entry .phrase { font-weight: 600; }
+  .entry .detail {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 11px;
+    color: #52525b;
+  }
+  .entry .ok   { color: #15803d; }
+  .entry .warn { color: #b45309; }
+
+  /* selection highlight, drawn by the browser rather than by our code */
+  .selected { stroke: #6366f1; stroke-width: 3; stroke-dasharray: 6 4; }
+
+  /* a dashed outline around every letter is unreadable, so text gets
+     underlined instead */
+  text.selected {
+    stroke: none;
+    text-decoration: underline;
+    text-decoration-color: #6366f1;
+    text-decoration-thickness: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div id="canvasArea">
+  <svg id="stage" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+    <g id="scene">
+      <rect data-kind="rectangle" data-color="blue"   x="60"  y="60"  width="140" height="90"  fill="#3b82f6" transform="translate(0,0)"/>
+      <rect data-kind="rectangle" data-color="red"    x="250" y="80"  width="110" height="110" fill="#ef4444" transform="translate(0,0)"/>
+      <rect data-kind="rectangle" data-color="blue"   x="420" y="60"  width="90"  height="140" fill="#3b82f6" transform="translate(0,0)"/>
+      <circle data-kind="circle"  data-color="green"  cx="140" cy="330" r="55"  fill="#22c55e" transform="translate(0,0)"/>
+      <circle data-kind="circle"  data-color="yellow" cx="310" cy="350" r="40"  fill="#eab308" transform="translate(0,0)"/>
+      <circle data-kind="circle"  data-color="red"    cx="470" cy="320" r="48"  fill="#ef4444" transform="translate(0,0)"/>
+      <text data-kind="text" data-color="black" x="80"  y="480" font-size="28" fill="#18181b" transform="translate(0,0)">Heading</text>
+      <text data-kind="text" data-color="black" x="330" y="490" font-size="20" fill="#52525b" transform="translate(0,0)">Some label</text>
+    </g>
+  </svg>
+</div>
+
+<div id="panel">
+  <h1>Voice-controlled design canvas</h1>
+  <p class="hint">
+    Click a shape to select it. Shift-click to add. Drag to move.<br>
+    Or type a command below.
+  </p>
+
+  <input id="cmd" placeholder="e.g. select the blue ones" autofocus>
+
+  <div id="status">nothing selected</div>
+
+  <div id="log"></div>
+</div>
+
+<script src="slot_extractor.js"></script>
+<script src="app.js"></script>
+<script src="commands.js"></script>
+<script type="module" src="classifier.js"></script>
+
+</body>
+</html>

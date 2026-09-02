@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Model load test</title>
+<style>
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    max-width: 760px; margin: 40px auto; padding: 0 20px;
+    line-height: 1.5; color: #18181b; background: #fafafa;
+  }
+  h1 { font-size: 20px; }
+  #steps { font-family: ui-monospace, Menlo, monospace; font-size: 13px; }
+  .step { padding: 4px 0; }
+  .ok   { color: #15803d; }
+  .bad  { color: #b91c1c; }
+  .busy { color: #a16207; }
+  pre {
+    background: #fff; border: 1px solid #e4e4e7; border-radius: 6px;
+    padding: 12px; font-size: 12px; overflow-x: auto; white-space: pre-wrap;
+  }
+  input {
+    width: 100%; padding: 10px 12px; font-size: 15px; font-family: inherit;
+    border: 1px solid #d4d4d8; border-radius: 6px; margin-top: 16px;
+  }
+  input:disabled { background: #f4f4f5; color: #a1a1aa; }
+</style>
+</head>
+<body>
+
+<h1>Model load test</h1>
+<p>Loads the classifier and nothing else. Watch the steps below.</p>
+
+<div id="steps"></div>
+
+<input id="phrase" placeholder="waiting for the model..." disabled>
+<pre id="result"></pre>
+
+<script type="module">
+
+var stepsBox = document.getElementById('steps');
+var resultBox = document.getElementById('result');
+var phraseBox = document.getElementById('phrase');
+
+function step(text, cssClass) {
+  var div = document.createElement('div');
+  div.className = 'step ' + (cssClass || 'busy');
+  div.textContent = text;
+  stepsBox.appendChild(div);
+  return div;
+}
+
+function showError(where, error) {
+  step('FAILED at: ' + where, 'bad');
+  resultBox.textContent =
+    error.name + ': ' + error.message + '\n\n' + (error.stack || '');
+  console.error(error);
+}
+
+var pipeline, env;
+
+// ---- step 1: fetch the library from the CDN
+var s1 = step('1. loading transformers.js from CDN...');
+try {
+  var lib = await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3');
+  pipeline = lib.pipeline;
+  env = lib.env;
+  s1.textContent = '1. transformers.js loaded';
+  s1.className = 'step ok';
+} catch (error) {
+  s1.className = 'step bad';
+  showError('loading the library from the CDN', error);
+  throw error;
+}
+
+// ---- step 2: point it at the local model, not the internet
+var s2 = step('2. configuring for local files...');
+try {
+  env.allowRemoteModels = false;   // never reach out to Hugging Face
+  env.allowLocalModels = true;
+  env.localModelPath = './';       // so "model" means ./model/
+  s2.textContent = '2. configured (looking in ./model/)';
+  s2.className = 'step ok';
+} catch (error) {
+  s2.className = 'step bad';
+  showError('configuring env', error);
+  throw error;
+}
+
+// ---- step 3: check the files are actually reachable
+var s3 = step('3. checking files are reachable...');
+try {
+  var wanted = ['model/config.json', 'model/tokenizer.json',
+                'model/onnx/model_quantized.onnx'];
+  var missing = [];
+  for (var i = 0; i < wanted.length; i++) {
+    var response = await fetch(wanted[i], { method: 'HEAD' });
+    if (!response.ok) {
+      missing.push(wanted[i] + ' (' + response.status + ')');
+    }
+  }
+  if (missing.length > 0) {
+    throw new Error('could not reach: ' + missing.join(', '));
+  }
+  s3.textContent = '3. all three files reachable';
+  s3.className = 'step ok';
+} catch (error) {
+  s3.className = 'step bad';
+  showError('reaching the model files', error);
+  throw error;
+}
+
+// ---- step 4: build the pipeline (this downloads ~66 MB the first time)
+var s4 = step('4. loading the model, 66 MB, please wait...');
+var classifier;
+try {
+  var started = Date.now();
+  classifier = await pipeline('text-classification', 'model', { dtype: 'q8' });
+  var seconds = ((Date.now() - started) / 1000).toFixed(1);
+  s4.textContent = '4. model loaded in ' + seconds + 's';
+  s4.className = 'step ok';
+} catch (error) {
+  s4.className = 'step bad';
+  showError('building the pipeline', error);
+  throw error;
+}
+
+// ---- step 5: one prediction, to prove it works
+var s5 = step('5. running a test phrase...');
+try {
+  var output = await classifier('select the blue ones', { top_k: 3 });
+  s5.textContent = '5. prediction works';
+  s5.className = 'step ok';
+  resultBox.textContent =
+    '"select the blue ones"\n\n' + JSON.stringify(output, null, 2);
+} catch (error) {
+  s5.className = 'step bad';
+  showError('running a prediction', error);
+  throw error;
+}
+
+// ---- ready for you to type
+phraseBox.disabled = false;
+phraseBox.placeholder = 'type a phrase';
+phraseBox.focus();
+
+phraseBox.addEventListener('keydown', async function (event) {
+  if (event.key !== 'Enter') return;
+  var text = phraseBox.value.trim().toLowerCase();
+  if (text === '') return;
+  var out = await classifier(text, { top_k: 3 });
+  resultBox.textContent = '"' + text + '"\n\n' + JSON.stringify(out, null, 2);
+});
+
+</script>
+</body>
+</html>
