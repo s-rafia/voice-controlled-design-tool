@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Slot extractor tests</title>
+<style>
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    line-height: 1.5;
+    color: #1a1a1a;
+    background: #fafafa;
+  }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  h2 { font-size: 16px; margin-top: 32px; }
+  .sub { color: #666; margin-top: 0; }
+  #summary { font-weight: 600; padding: 10px 14px; border-radius: 6px; display: inline-block; }
+  .allpass { background: #e6f4ea; color: #14532d; }
+  .somefail { background: #fdecea; color: #7f1d1d; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 12px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #e5e5e5; vertical-align: top; }
+  th { font-weight: 600; color: #555; }
+  td.status { width: 60px; font-weight: 600; }
+  .pass { color: #16794a; }
+  .fail { color: #b91c1c; }
+  code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; }
+  input {
+    width: 100%; padding: 10px 12px; font-size: 15px;
+    border: 1px solid #ccc; border-radius: 6px;
+    font-family: inherit;
+  }
+  #result {
+    margin-top: 12px; padding: 12px 14px; background: #fff;
+    border: 1px solid #e5e5e5; border-radius: 6px;
+    font-family: ui-monospace, Menlo, monospace; font-size: 13px;
+    white-space: pre-wrap; min-height: 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Slot extractor</h1>
+<p class="sub">Turns a phrase into the parameters a command needs.</p>
+
+<h2>Try it</h2>
+<input id="tryBox" placeholder="Type a phrase, e.g. pan the canvas left" autofocus>
+<div id="result"></div>
+
+<h2>Tests</h2>
+<div id="summary"></div>
+<table>
+  <thead>
+    <tr><th class="status"></th><th>Phrase</th><th>Expected</th><th>Got</th></tr>
+  </thead>
+  <tbody id="rows"></tbody>
+</table>
+
+<script src="slot_extractor.js"></script>
+<script>
+
+var TEST_CASES = [
+  ['pan the canvas to the left',        'PAN',               {direction: 'left'}],
+  ['pan the canvas right',              'PAN',               {direction: 'right'}],
+  ['move the canvas up',                'PAN',               {direction: 'up'}],
+  ['move the canvas down a bit',        'PAN',               {direction: 'down', amount: 'small'}],
+  ['nudge it up',                       'MOVE_OBJECT',       {direction: 'up'}],
+  ['move the selection up ten pixels',  'MOVE_OBJECT',       {direction: 'up', number: 10}],
+  ['select the blue ones',              'SELECT_BY_COLOR',   {color: 'blue'}],
+  ['select all the purple boxes',       'SELECT_BY_COLOR',   {color: 'purple'}],
+  ['set the fill color to light blue',  'SET_FILL_COLOR',    {color: 'blue', shade: 'light'}],
+  ['fill it with dark green',           'SET_FILL_COLOR',    {color: 'green', shade: 'dark'}],
+  ['select all the text layers',        'SELECT_BY_TYPE',    {objectType: 'text'}],
+  ['grab all the rectangles',           'SELECT_BY_TYPE',    {objectType: 'rectangle'}],
+  ['choose every image',                'SELECT_BY_TYPE',    {objectType: 'image'}],
+  ['draw a rectangle',                  'CREATE_SHAPE',      {shapeType: 'rectangle'}],
+  ['add a circle',                      'CREATE_SHAPE',      {shapeType: 'circle'}],
+  ['insert a triangle',                 'CREATE_SHAPE',      {shapeType: 'triangle'}],
+  ['flip this horizontally',            'FLIP',              {axis: 'horizontal'}],
+  ['flip this top to bottom',           'FLIP',              {axis: 'vertical'}],
+  ['mirror this layer vertically',      'FLIP',              {axis: 'vertical'}],
+  ['align these to the left',           'ALIGN',             {edge: 'left'}],
+  ['center these horizontally',         'ALIGN',             {edge: 'center', axis: 'horizontal'}],
+  ['align them along the top',          'ALIGN',             {edge: 'top'}],
+  ['make this shape bigger',            'RESIZE',            {scale: 'bigger'}],
+  ['shrink this shape',                 'RESIZE',            {scale: 'smaller'}],
+  ['make this half the size',           'RESIZE',            {scale: 'smaller'}],
+  ['rotate this ninety degrees',        'ROTATE',            {number: 90}],
+  ['rotate the box forty five degrees', 'ROTATE',            {number: 45}],
+  ['rotate the selection one eighty',   'ROTATE',            {number: 180}],
+  ['turn this shape clockwise',         'ROTATE',            {rotation: 'clockwise'}],
+  ['turn this counterclockwise',        'ROTATE',            {rotation: 'counterclockwise'}],
+  ['set the opacity to twenty percent', 'SET_OPACITY',       {number: 20, isPercent: true}],
+  ['zoom in two hundred percent',       'ZOOM_IN',           {number: 200, isPercent: true}],
+  ['lock this layer',                   'LOCK_LAYER',        {lockState: 'lock'}],
+  ['unlock the background',             'LOCK_LAYER',        {lockState: 'unlock'}],
+  ['hide this layer',                   'TOGGLE_VISIBILITY', {visibility: 'hide'}],
+  ['show all layers',                   'TOGGLE_VISIBILITY', {visibility: 'show'}],
+  ['make this shape invisible',         'TOGGLE_VISIBILITY', {visibility: 'hide'}],
+  ['make this visible again',           'TOGGLE_VISIBILITY', {visibility: 'show'}],
+  ['bring it to the front',             'BRING_FORWARD',     {extent: 'full'}],
+  ['move this layer up one level',      'BRING_FORWARD',     {extent: 'step'}],
+  ['duplicate these three times',       'DUPLICATE',         {number: 3}]
+];
+
+function runTests() {
+  var rows = document.getElementById('rows');
+  var passCount = 0;
+  var failCount = 0;
+
+  for (var i = 0; i < TEST_CASES.length; i++) {
+    var phrase = TEST_CASES[i][0];
+    var expected = TEST_CASES[i][2];
+    var got = extractSlots(phrase);
+
+    var ok = true;
+    var keys = Object.keys(expected);
+    for (var j = 0; j < keys.length; j++) {
+      if (got[keys[j]] !== expected[keys[j]]) {
+        ok = false;
+      }
+    }
+
+    if (ok) { passCount++; } else { failCount++; }
+
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td class="status ' + (ok ? 'pass' : 'fail') + '">' + (ok ? 'pass' : 'FAIL') + '</td>' +
+      '<td>' + phrase + '</td>' +
+      '<td><code>' + JSON.stringify(expected) + '</code></td>' +
+      '<td><code>' + JSON.stringify(got) + '</code></td>';
+    rows.appendChild(tr);
+  }
+
+  var summary = document.getElementById('summary');
+  summary.textContent = passCount + ' passed, ' + failCount + ' failed';
+  summary.className = (failCount === 0) ? 'allpass' : 'somefail';
+}
+
+function showResult() {
+  var phrase = document.getElementById('tryBox').value;
+  var out = document.getElementById('result');
+
+  if (phrase.trim() === '') {
+    out.textContent = '';
+    return;
+  }
+
+  var slots = extractSlots(phrase);
+  var text = JSON.stringify(slots, null, 2);
+
+  if (Object.keys(slots).length === 0) {
+    text = '(no slots found)';
+  }
+
+  out.textContent = text;
+}
+
+document.getElementById('tryBox').addEventListener('input', showResult);
+runTests();
+
+</script>
+</body>
+</html>
