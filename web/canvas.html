@@ -13,14 +13,88 @@
     color: #18181b;
     display: flex;
     height: 100vh;
+    font-size: 13px;
   }
 
-  #canvasArea {
-    flex: 1;
+  /* ------------------------------------------------------------ left rail */
+
+  #tools {
+    width: 200px;
+    background: #ffffff;
+    border-right: 1px solid #d4d4d8;
+    padding: 12px 10px;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+
+  .group { margin-bottom: 16px; }
+  .group h2 {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #71717a;
+    margin: 0 0 6px 2px;
+    font-weight: 600;
+  }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+
+  button.tool {
     display: flex;
-    flex-direction: column;
-    padding: 16px;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px 7px;
+    font-size: 11.5px;
+    font-family: inherit;
+    background: #fafafa;
+    border: 1px solid #d4d4d8;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #27272a;
     min-width: 0;
+  }
+  button.tool:hover  { background: #eef2ff; border-color: #a5b4fc; }
+  button.tool:active { background: #e0e7ff; }
+  button.tool.iconOnly { padding: 7px 0; }
+
+  .ic {
+    width: 15px; height: 15px; flex-shrink: 0;
+    fill: none; stroke: currentColor; stroke-width: 1.8;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+  button.swatch {
+    aspect-ratio: 1;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0;
+  }
+  button.swatch:hover  { outline: 2px solid #a5b4fc; outline-offset: 1px; }
+  button.swatch.chosen { outline: 2px solid #4f46e5; outline-offset: 1px; }
+
+  .sliderRow {
+    display: flex; align-items: center; gap: 6px;
+    margin-top: 7px; font-size: 10px; color: #71717a;
+  }
+  .sliderRow input[type=range] { flex: 1; min-width: 0; accent-color: #4f46e5; }
+  .sliderRow .value {
+    width: 30px; text-align: right; font-variant-numeric: tabular-nums;
+    color: #3f3f46;
+  }
+  #shadePreview {
+    width: 16px; height: 16px; border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.15); flex-shrink: 0;
+  }
+
+  /* -------------------------------------------------------------- canvas */
+
+  #canvasArea {
+    flex: 1; display: flex; flex-direction: column;
+    padding: 14px; min-width: 0;
   }
 
   #stage {
@@ -30,85 +104,278 @@
     border-radius: 6px;
     display: block;
     width: 100%;
-    cursor: default;
   }
+
+  /* ------------------------------------------------------------ right panel */
 
   #panel {
-    width: 360px;
+    width: 320px;
     border-left: 1px solid #d4d4d8;
     background: #ffffff;
-    padding: 16px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     overflow: hidden;
+    flex-shrink: 0;
   }
 
-  h1 { font-size: 15px; margin: 0; }
-  .hint { font-size: 12px; color: #71717a; margin: 0; line-height: 1.5; }
+  h1 { font-size: 14px; margin: 0; }
+  .hint { font-size: 11px; color: #71717a; margin: 0; line-height: 1.5; }
 
   #cmd {
-    width: 100%;
-    padding: 10px 12px;
-    font-size: 14px;
-    font-family: inherit;
-    border: 1px solid #d4d4d8;
-    border-radius: 6px;
+    width: 100%; padding: 9px 11px; font-size: 14px; font-family: inherit;
+    border: 1px solid #d4d4d8; border-radius: 6px;
   }
   #cmd:focus { outline: 2px solid #6366f1; outline-offset: -1px; }
 
   #status {
-    font-size: 12px;
-    color: #52525b;
-    padding: 8px 10px;
-    background: #fafafa;
-    border: 1px solid #e4e4e7;
-    border-radius: 6px;
+    font-size: 11px; color: #52525b; padding: 6px 9px;
+    background: #fafafa; border: 1px solid #e4e4e7; border-radius: 5px;
   }
 
-  #log {
-    flex: 1;
-    overflow-y: auto;
-    font-size: 12px;
-    border-top: 1px solid #e4e4e7;
-    padding-top: 10px;
+  .sectionLabel {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+    color: #71717a; font-weight: 600; margin: 4px 0 0;
   }
-  .entry { margin-bottom: 12px; line-height: 1.5; }
+
+  #props { border: 1px solid #e4e4e7; border-radius: 5px; padding: 8px; }
+  .propsNote { font-size: 11px; color: #a1a1aa; }
+  .propGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .prop { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #71717a; }
+  .prop.wide { margin-top: 6px; }
+  .prop span { width: 12px; flex-shrink: 0; }
+  .prop.wide span { width: 26px; }
+  .prop input {
+    width: 100%; min-width: 0; padding: 3px 5px; font-size: 12px;
+    font-family: inherit; border: 1px solid #d4d4d8; border-radius: 4px;
+    color: #18181b;
+  }
+  .prop input:focus { outline: 2px solid #6366f1; outline-offset: -1px; }
+
+  #layers {
+    max-height: 170px; overflow-y: auto;
+    border: 1px solid #e4e4e7; border-radius: 5px;
+  }
+  .layer {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 6px; border-bottom: 1px solid #f4f4f5;
+    cursor: pointer; font-size: 12px;
+  }
+  .layer:last-child { border-bottom: none; }
+  .layer:hover { background: #fafafa; }
+  .layer.sel { background: #eef2ff; }
+  .layer.locked { background: repeating-linear-gradient(
+      45deg, #fafafa, #fafafa 5px, #f1f1f3 5px, #f1f1f3 10px); }
+  .layer.locked .name { color: #a1a1aa; }
+  .layer.hidden .name { color: #c4c4cc; text-decoration: line-through; }
+  .layer .dot {
+    width: 11px; height: 11px; border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.15); flex-shrink: 0;
+  }
+  .layer .name { flex: 1; color: #3f3f46; }
+  .layer .mini {
+    border: none; background: none; cursor: pointer;
+    padding: 3px; border-radius: 4px; flex-shrink: 0; color: #a1a1aa;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .layer .mini svg { width: 15px; height: 15px; display: block; }
+  .layer .mini:hover { background: #e4e4e7; color: #3f3f46; }
+  .layer .mini.active { color: #4f46e5; }
+
+  #log {
+    flex: 1; overflow-y: auto; border-top: 1px solid #e4e4e7;
+    padding-top: 8px; font-size: 12px;
+  }
+  .entry { margin-bottom: 10px; line-height: 1.45; }
   .entry .phrase { font-weight: 600; }
   .entry .detail {
-    font-family: ui-monospace, Menlo, monospace;
-    font-size: 11px;
-    color: #52525b;
+    font-family: ui-monospace, Menlo, monospace; font-size: 10px; color: #71717a;
   }
   .entry .ok   { color: #15803d; }
   .entry .warn { color: #b45309; }
 
-  /* selection highlight, drawn by the browser rather than by our code */
   .selected { stroke: #6366f1; stroke-width: 3; stroke-dasharray: 6 4; }
-
-  /* a dashed outline around every letter is unreadable, so text gets
-     underlined instead */
   text.selected {
-    stroke: none;
-    text-decoration: underline;
-    text-decoration-color: #6366f1;
-    text-decoration-thickness: 2px;
+    stroke: none; text-decoration: underline;
+    text-decoration-color: #6366f1; text-decoration-thickness: 2px;
   }
 </style>
 </head>
 <body>
 
+<div id="tools">
+
+  <div class="group">
+    <h2>Create</h2>
+    <div class="grid4">
+      <button class="tool iconOnly" title="Rectangle"
+              data-intent="CREATE_SHAPE" data-slots='{"shapeType":"rectangle"}'>
+        <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="1"/></svg>
+      </button>
+      <button class="tool iconOnly" title="Square"
+              data-intent="CREATE_SHAPE" data-slots='{"shapeType":"square"}'>
+        <svg class="ic" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="1"/></svg>
+      </button>
+      <button class="tool iconOnly" title="Circle"
+              data-intent="CREATE_SHAPE" data-slots='{"shapeType":"circle"}'>
+        <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>
+      </button>
+      <button class="tool iconOnly" title="Text"
+              data-intent="CREATE_TEXT" data-slots='{}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M5 6V5h14v1"/><path d="M12 5v14"/><path d="M9 19h6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Edit</h2>
+    <div class="grid2">
+      <button class="tool" data-intent="DUPLICATE" data-slots='{}'>Duplicate</button>
+      <button class="tool" data-intent="DELETE" data-slots='{}'>Delete</button>
+      <button class="tool" data-intent="UNDO" data-slots='{}'>Undo</button>
+      <button class="tool" data-intent="REDO" data-slots='{}'>Redo</button>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Arrange</h2>
+    <div class="grid2">
+      <button class="tool" data-intent="BRING_FORWARD" data-slots='{}'>Forward</button>
+      <button class="tool" data-intent="SEND_BACKWARD" data-slots='{}'>Back</button>
+      <button class="tool" data-intent="GROUP" data-slots='{}'>Group</button>
+      <button class="tool" data-intent="UNGROUP" data-slots='{}'>Ungroup</button>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Align elements</h2>
+    <div class="grid2">
+      <button class="tool" title="Align top" data-intent="ALIGN" data-slots='{"edge":"top"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M4 4h16"/><rect x="7" y="8" width="4" height="11" rx="1"/><rect x="14" y="8" width="4" height="7" rx="1"/></svg>
+        Top
+      </button>
+      <button class="tool" title="Align left" data-intent="ALIGN" data-slots='{"edge":"left"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M4 4v16"/><rect x="8" y="6" width="11" height="4" rx="1"/><rect x="8" y="14" width="7" height="4" rx="1"/></svg>
+        Left
+      </button>
+      <button class="tool" title="Align middle" data-intent="ALIGN" data-slots='{"edge":"center","axis":"vertical"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M4 12h16"/><rect x="7" y="6" width="4" height="12" rx="1"/><rect x="14" y="9" width="4" height="6" rx="1"/></svg>
+        Middle
+      </button>
+      <button class="tool" title="Align centre" data-intent="ALIGN" data-slots='{"edge":"center"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M12 4v16"/><rect x="5" y="6" width="14" height="4" rx="1"/><rect x="8" y="14" width="8" height="4" rx="1"/></svg>
+        Centre
+      </button>
+      <button class="tool" title="Align bottom" data-intent="ALIGN" data-slots='{"edge":"bottom"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M4 20h16"/><rect x="7" y="5" width="4" height="11" rx="1"/><rect x="14" y="9" width="4" height="7" rx="1"/></svg>
+        Bottom
+      </button>
+      <button class="tool" title="Align right" data-intent="ALIGN" data-slots='{"edge":"right"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M20 4v16"/><rect x="5" y="6" width="11" height="4" rx="1"/><rect x="9" y="14" width="7" height="4" rx="1"/></svg>
+        Right
+      </button>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Space evenly</h2>
+    <div class="grid2">
+      <button class="tool" title="Space evenly, vertically"
+              data-intent="DISTRIBUTE" data-slots='{"axis":"vertical"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M3 3h18"/><path d="M3 21h18"/><rect x="7" y="9" width="10" height="6" rx="1"/></svg>
+        Vertical
+      </button>
+      <button class="tool" title="Space evenly, horizontally"
+              data-intent="DISTRIBUTE" data-slots='{"axis":"horizontal"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M3 3v18"/><path d="M21 3v18"/><rect x="9" y="7" width="6" height="10" rx="1"/></svg>
+        Horizontal
+      </button>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Transform</h2>
+    <div class="grid2">
+      <button class="tool" title="Rotate 90 degrees" data-intent="ROTATE" data-slots='{"number":90}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>
+        Rotate
+      </button>
+      <button class="tool" title="Flip horizontally" data-intent="FLIP" data-slots='{"axis":"horizontal"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M9 8L5 12l4 4z"/><path d="M15 8l4 4-4 4z"/></svg>
+        Flip H
+      </button>
+      <button class="tool" title="Flip vertically" data-intent="FLIP" data-slots='{"axis":"vertical"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M3 12h18"/><path d="M8 9l4-4 4 4z"/><path d="M8 15l4 4 4-4z"/></svg>
+        Flip V
+      </button>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Fill</h2>
+    <div class="swatches" id="swatches"></div>
+    <div class="sliderRow">
+      <div id="shadePreview"></div>
+      <input type="range" id="shade" min="-80" max="80" value="0" step="5"
+             title="darker to lighter">
+      <span class="value" id="shadeValue">0</span>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Opacity</h2>
+    <div class="sliderRow">
+      <input type="range" id="opacity" min="0" max="100" value="100" step="5">
+      <span class="value" id="opacityValue">100</span>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Pan</h2>
+    <div class="grid4">
+      <button class="tool iconOnly" title="Pan left" data-intent="PAN" data-slots='{"direction":"left"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button class="tool iconOnly" title="Pan up" data-intent="PAN" data-slots='{"direction":"up"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7"/></svg>
+      </button>
+      <button class="tool iconOnly" title="Pan down" data-intent="PAN" data-slots='{"direction":"down"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></svg>
+      </button>
+      <button class="tool iconOnly" title="Pan right" data-intent="PAN" data-slots='{"direction":"right"}'>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>View</h2>
+    <div class="grid4">
+      <button class="tool iconOnly" title="Zoom in" data-intent="ZOOM_IN" data-slots='{}'>
+        <svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+      </button>
+      <button class="tool iconOnly" title="Zoom out" data-intent="ZOOM_OUT" data-slots='{}'>
+        <svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/><path d="M8 11h6"/></svg>
+      </button>
+      <button class="tool" title="Fit everything on screen" data-intent="ZOOM_FIT" data-slots='{}'>Fit</button>
+      <button class="tool" title="Actual size" data-intent="ZOOM_RESET" data-slots='{}'>100%</button>
+    </div>
+  </div>
+
+</div>
+
 <div id="canvasArea">
   <svg id="stage" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
     <g id="scene">
-      <rect data-kind="rectangle" data-color="blue"   x="60"  y="60"  width="140" height="90"  fill="#3b82f6" transform="translate(0,0)"/>
-      <rect data-kind="rectangle" data-color="red"    x="250" y="80"  width="110" height="110" fill="#ef4444" transform="translate(0,0)"/>
-      <rect data-kind="rectangle" data-color="blue"   x="420" y="60"  width="90"  height="140" fill="#3b82f6" transform="translate(0,0)"/>
-      <circle data-kind="circle"  data-color="green"  cx="140" cy="330" r="55"  fill="#22c55e" transform="translate(0,0)"/>
-      <circle data-kind="circle"  data-color="yellow" cx="310" cy="350" r="40"  fill="#eab308" transform="translate(0,0)"/>
-      <circle data-kind="circle"  data-color="red"    cx="470" cy="320" r="48"  fill="#ef4444" transform="translate(0,0)"/>
-      <text data-kind="text" data-color="black" x="80"  y="480" font-size="28" fill="#18181b" transform="translate(0,0)">Heading</text>
-      <text data-kind="text" data-color="black" x="330" y="490" font-size="20" fill="#52525b" transform="translate(0,0)">Some label</text>
+      <rect data-kind="rectangle" data-color="blue"   x="60"  y="60"  width="140" height="90"  fill="#3b82f6"/>
+      <rect data-kind="rectangle" data-color="red"    x="250" y="80"  width="110" height="110" fill="#ef4444"/>
+      <rect data-kind="rectangle" data-color="blue"   x="420" y="60"  width="90"  height="140" fill="#3b82f6"/>
+      <circle data-kind="circle"  data-color="green"  cx="140" cy="330" r="55"  fill="#22c55e"/>
+      <circle data-kind="circle"  data-color="yellow" cx="310" cy="350" r="40"  fill="#eab308"/>
+      <circle data-kind="circle"  data-color="red"    cx="470" cy="320" r="48"  fill="#ef4444"/>
+      <text data-kind="text" data-color="black" x="80"  y="480" font-size="28" fill="#18181b">Heading</text>
+      <text data-kind="text" data-color="black" x="330" y="490" font-size="20" fill="#52525b">Some label</text>
     </g>
   </svg>
 </div>
@@ -116,20 +383,29 @@
 <div id="panel">
   <h1>Voice-controlled design canvas</h1>
   <p class="hint">
-    Click a shape to select it. Shift-click to add. Drag to move.<br>
-    Or type a command below.
+    Click a shape to select. Shift-click to add. Drag to move.<br>
+    Drag empty canvas to pan. Double-click text to edit it.<br>
+    Use the tools on the left, or type a command.
   </p>
 
   <input id="cmd" placeholder="e.g. select the blue ones" autofocus>
 
   <div id="status">nothing selected</div>
 
+  <p class="sectionLabel">Properties</p>
+  <div id="props"></div>
+
+  <p class="sectionLabel">Layers</p>
+  <div id="layers"></div>
+
+  <p class="sectionLabel">Activity</p>
   <div id="log"></div>
 </div>
 
 <script src="slot_extractor.js"></script>
 <script src="app.js"></script>
 <script src="commands.js"></script>
+<script src="ui.js"></script>
 <script type="module" src="classifier.js"></script>
 
 </body>
