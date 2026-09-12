@@ -362,6 +362,26 @@ function addToSelection(shapes) {
   refreshSelection();
 }
 
+// Takes shapes back out of the selection and leaves the rest alone. Returns
+// how many were actually removed, so the caller can say "none of those were
+// selected" instead of claiming it did something.
+function removeFromSelection(shapes) {
+  var kept = [];
+  var removed = 0;
+
+  for (var i = 0; i < state.selection.length; i++) {
+    if (shapes.indexOf(state.selection[i]) === -1) {
+      kept.push(state.selection[i]);
+    } else {
+      removed = removed + 1;
+    }
+  }
+
+  state.selection = kept;
+  refreshSelection();
+  return removed;
+}
+
 function clearSelection() {
   state.selection = [];
   refreshSelection();

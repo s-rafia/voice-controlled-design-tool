@@ -181,7 +181,15 @@ document.getElementById('tools').addEventListener('click', function (event) {
 
 var propsBox = document.getElementById('props');
 
-function propInput(labelText, value, onCommit) {
+// Which shape the panel is currently built for, and the fields inside it.
+//
+// These exist so the panel can be refreshed WITHOUT being rebuilt. Rebuilding
+// throws away the input elements, and an input that is thrown away loses
+// focus -- so committing one field would kill the field you clicked into next.
+var propsShape = null;
+var propInputs = [];
+
+function propInput(labelText, read, onCommit) {
   var wrap = document.createElement('label');
   wrap.className = 'prop';
 
@@ -190,7 +198,7 @@ function propInput(labelText, value, onCommit) {
 
   var input = document.createElement('input');
   input.type = 'number';
-  input.value = Math.round(value);
+  input.value = Math.round(read());
 
   function commit() {
     var next = parseFloat(input.value);
@@ -205,15 +213,42 @@ function propInput(labelText, value, onCommit) {
     if (event.key === 'Enter') { commit(); }
   });
 
+  propInputs.push({
+    input: input,
+    update: function () { input.value = Math.round(read()); }
+  });
+
   wrap.appendChild(span);
   wrap.appendChild(input);
   return wrap;
 }
 
+// Put the current numbers into the existing fields, leaving whichever field
+// the user is typing in alone.
+function updatePropValues() {
+  for (var i = 0; i < propInputs.length; i++) {
+    if (propInputs[i].input === document.activeElement) {
+      continue;
+    }
+    propInputs[i].update();
+  }
+}
+
 function refreshProps() {
+  var single = (state.selection.length === 1) ? state.selection[0] : null;
+
+  // Same shape as last time: the fields are already the right fields, so just
+  // put fresh numbers in them.
+  if (single !== null && single === propsShape) {
+    updatePropValues();
+    return;
+  }
+
+  propsShape = single;
+  propInputs = [];
   propsBox.innerHTML = '';
 
-  if (state.selection.length !== 1) {
+  if (single === null) {
     var note = document.createElement('div');
     note.className = 'propsNote';
     note.textContent = state.selection.length === 0
@@ -223,29 +258,28 @@ function refreshProps() {
     return;
   }
 
-  var shape = state.selection[0];
-  var box = sceneBox(shape);
+  var shape = single;
   var kind = shape.getAttribute('data-kind');
 
   var grid = document.createElement('div');
   grid.className = 'propGrid';
 
-  grid.appendChild(propInput('X', box.x, function (v) {
+  grid.appendChild(propInput('X', function () { return sceneBox(shape).x; }, function (v) {
     setShapePosition(shape, v, sceneBox(shape).y);
   }));
-  grid.appendChild(propInput('Y', box.y, function (v) {
+  grid.appendChild(propInput('Y', function () { return sceneBox(shape).y; }, function (v) {
     setShapePosition(shape, sceneBox(shape).x, v);
   }));
 
   if (kind !== 'group') {
-    grid.appendChild(propInput('W', box.width, function (v) {
+    grid.appendChild(propInput('W', function () { return sceneBox(shape).width; }, function (v) {
       var current = sceneBox(shape);
       var x = current.x;
       var y = current.y;
       setShapeSize(shape, v, current.height);
       setShapePosition(shape, x, y);
     }));
-    grid.appendChild(propInput('H', box.height, function (v) {
+    grid.appendChild(propInput('H', function () { return sceneBox(shape).height; }, function (v) {
       var current = sceneBox(shape);
       var x = current.x;
       var y = current.y;
@@ -280,6 +314,11 @@ function refreshProps() {
     field.addEventListener('change', commitText);
     field.addEventListener('keydown', function (event) {
       if (event.key === 'Enter') { commitText(); field.blur(); }
+    });
+
+    propInputs.push({
+      input: field,
+      update: function () { field.value = shape.textContent; }
     });
 
     row.appendChild(span);

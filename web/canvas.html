@@ -123,11 +123,41 @@
   h1 { font-size: 14px; margin: 0; }
   .hint { font-size: 11px; color: #71717a; margin: 0; line-height: 1.5; }
 
+  .inputRow { display: flex; gap: 6px; }
+
   #cmd {
-    width: 100%; padding: 9px 11px; font-size: 14px; font-family: inherit;
+    flex: 1; min-width: 0;
+    padding: 9px 11px; font-size: 14px; font-family: inherit;
     border: 1px solid #d4d4d8; border-radius: 6px;
   }
   #cmd:focus { outline: 2px solid #6366f1; outline-offset: -1px; }
+
+  #mic {
+    width: 40px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #fafafa; border: 1px solid #d4d4d8; border-radius: 6px;
+    cursor: pointer; color: #52525b;
+  }
+  #mic:hover:not(:disabled) { background: #eef2ff; border-color: #a5b4fc; }
+  #mic:disabled { opacity: 0.45; cursor: not-allowed; }
+  #mic svg { width: 17px; height: 17px; fill: none; stroke: currentColor;
+             stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* listening: red, with a slow pulse so it is obvious the mic is live */
+  #mic.on {
+    background: #fee2e2; border-color: #fca5a5; color: #b91c1c;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(220,38,38,0.35); }
+    50%      { box-shadow: 0 0 0 5px rgba(220,38,38,0); }
+  }
+
+  .heard {
+    font-size: 12px; color: #71717a; min-height: 16px;
+    font-style: italic; padding: 0 2px;
+  }
+  .heard.final { color: #18181b; font-style: normal; }
 
   #status {
     font-size: 11px; color: #52525b; padding: 6px 9px;
@@ -388,7 +418,18 @@
     Use the tools on the left, or type a command.
   </p>
 
-  <input id="cmd" placeholder="e.g. select the blue ones" autofocus>
+  <div class="inputRow">
+    <input id="cmd" placeholder="e.g. select the blue ones" autofocus>
+    <button id="mic" title="Start listening">
+      <svg viewBox="0 0 24 24">
+        <rect x="9" y="2" width="6" height="11" rx="3"/>
+        <path d="M5 11a7 7 0 0 0 14 0"/>
+        <path d="M12 18v3"/><path d="M8 21h8"/>
+      </svg>
+    </button>
+  </div>
+
+  <div id="heard" class="heard"></div>
 
   <div id="status">nothing selected</div>
 
@@ -406,6 +447,7 @@
 <script src="app.js"></script>
 <script src="commands.js"></script>
 <script src="ui.js"></script>
+<script src="speech.js"></script>
 <script type="module" src="classifier.js"></script>
 
 </body>

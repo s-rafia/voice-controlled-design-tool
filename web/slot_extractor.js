@@ -56,8 +56,11 @@ var VOCABULARY = {
   },
 
   shade: {
-    light: ['light', 'pale'],
-    dark:  ['dark', 'deep']
+    // Comparatives matter more than the plain forms in practice: people adjust
+    // a colour they can already see ("make it darker") far more often than
+    // they name one from scratch ("make it dark green").
+    light: ['light', 'lighter', 'pale', 'paler'],
+    dark:  ['dark', 'darker', 'deep', 'deeper']
   },
 
   objectType: {
@@ -114,8 +117,17 @@ var VOCABULARY = {
   },
 
   extent: {
+    // "behind the rest" and "in front of the others" say all the way, not one
+    // step, the same as "to the back" -- people name the destination relative
+    // to the other shapes rather than in layer counts.
     full: ['to the front', 'to the back', 'very front', 'very back',
-           'all the way', 'to the top', 'to the bottom'],
+           'all the way', 'to the top', 'to the bottom',
+           'behind the rest', 'behind the others', 'behind everything',
+           'in front of the rest', 'in front of the others',
+           'in front of everything',
+           'under the rest', 'under the others', 'under everything',
+           'above the rest', 'above the others', 'above everything',
+           'below the rest', 'below the others', 'below everything'],
     step: ['one level', 'one step', 'a level', 'a step', 'one layer']
   }
 };
@@ -182,7 +194,6 @@ function matchNumber(words) {
     if (!(word in NUMBER_WORDS)) continue;
 
     var next = words[i + 1];
-   
 
     // "one level", "one step", "one layer" describe how far, not how many.
     // That is the extent slot's job, so don't report a number here.
@@ -190,7 +201,7 @@ function matchNumber(words) {
       continue;
     }
 
-        // "one" is usually a pronoun -- "the blue one", "that one", "this one".
+    // "one" is usually a pronoun -- "the blue one", "that one", "this one".
     // Only count it as a number when it heads a compound ("one hundred",
     // "one eighty") or is followed by a unit ("one pixel", "one degree").
     if (word === 'one') {

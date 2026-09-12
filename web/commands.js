@@ -20,6 +20,7 @@ var CONFIDENCE_THRESHOLD = 0.60;
 // This is where the two vocabularies meet.
 var KIND_FOR_TYPE = {
   rectangle: 'rectangle',
+  square: 'rectangle',
   circle: 'circle',
   text: 'text',
   group: 'group'
@@ -62,6 +63,80 @@ function unlockedSelection() {
 function describeCount(n) {
   if (n === 1) return '1 shape';
   return n + ' shapes';
+}
+
+// Which kind of shape a phrase named, if it named one. The extractor fills
+// objectType for phrases about existing shapes ("the circle") and shapeType
+// for phrases about making new ones ("draw a circle"); either can appear.
+function kindFromSlots(slots) {
+  if (slots.objectType && KIND_FOR_TYPE[slots.objectType]) {
+    return KIND_FOR_TYPE[slots.objectType];
+  }
+  if (slots.shapeType && KIND_FOR_TYPE[slots.shapeType]) {
+    return KIND_FOR_TYPE[slots.shapeType];
+  }
+  return null;
+}
+
+// Which shapes a phrase is talking about.
+//
+// A phrase can narrow by colour, by kind, or by both, and both together mean
+// AND, not OR: "the red circle" is the shape that is red *and* a circle. The
+// old code filtered on colour alone, so "select the red circle" also picked up
+// the red square.
+function matchingShapes(slots) {
+  var kind = kindFromSlots(slots);
+  var shapes = allShapes();
+  var list = [];
+
+  for (var i = 0; i < shapes.length; i++) {
+    var shape = shapes[i];
+    if (slots.color && shape.getAttribute('data-color') !== slots.color) {
+      continue;
+    }
+    if (kind && shape.getAttribute('data-kind') !== kind) {
+      continue;
+    }
+    list.push(shape);
+  }
+  return list;
+}
+
+// Says the result back in the tool's own words -- "1 red rectangle",
+// "2 red shapes", "3 circles". Worth the few lines: when the wrong shapes get
+// picked, this is what tells the user whether the tool misread the colour or
+// the kind.
+function describeMatch(slots, count) {
+  var kind = kindFromSlots(slots);
+
+  var noun = 'shape';
+  if (kind) {
+    noun = kind;
+  }
+  if (count !== 1) {
+    noun = noun + 's';
+  }
+
+  if (slots.color) {
+    return count + ' ' + slots.color + ' ' + noun;
+  }
+  return count + ' ' + noun;
+}
+
+// The same thing without a count, for the "nothing matched" messages where
+// "no 0 red circles" would read strangely.
+function describeFilter(slots) {
+  var kind = kindFromSlots(slots);
+
+  var noun = 'shapes';
+  if (kind) {
+    noun = kind + 's';
+  }
+
+  if (slots.color) {
+    return slots.color + ' ' + noun;
+  }
+  return noun;
 }
 
 
@@ -115,45 +190,56 @@ var HANDLERS = {
     return 'selected all ' + describeCount(shapes.length);
   },
 
-  DESELECT: function () {
-    clearSelection();
-    return 'cleared the selection';
+  // "deselect" on its own clears everything. "deselect the red square" takes
+  // only those back out and leaves the rest selected -- which is the point of
+  // saying which ones.
+  DESELECT: function (slots) {
+    var kind = kindFromSlots(slots);
+
+    if (!slots.color && !kind) {
+      clearSelection();
+      return 'cleared the selection';
+    }
+
+    var shapes = matchingShapes(slots);
+    var removed = removeFromSelection(shapes);
+    if (removed === 0) {
+      return 'none of those were selected';
+    }
+    return 'deselected ' + describeMatch(slots, removed);
   },
 
   SELECT_BY_COLOR: function (slots) {
-    var shapes = shapesWithColor(slots.color);
+    var shapes = matchingShapes(slots);
     if (shapes.length === 0) {
-      return 'no ' + slots.color + ' shapes on the canvas';
+      return 'no ' + describeFilter(slots) + ' on the canvas';
     }
     setSelection(shapes);
-    return 'selected ' + describeCount(shapes.length) + ' in ' + slots.color;
+    return 'selected ' + describeMatch(slots, shapes.length);
   },
 
   SELECT_BY_TYPE: function (slots) {
-    var kind = KIND_FOR_TYPE[slots.objectType];
-    if (!kind) {
+    if (!kindFromSlots(slots)) {
       return 'this canvas has no ' + slots.objectType + ' shapes';
     }
-    var shapes = shapesOfKind(kind);
+    var shapes = matchingShapes(slots);
     if (shapes.length === 0) {
-      return 'no ' + kind + ' shapes on the canvas';
+      return 'no ' + describeFilter(slots) + ' on the canvas';
     }
     setSelection(shapes);
-    return 'selected ' + describeCount(shapes.length) + ' of kind ' + kind;
+    return 'selected ' + describeMatch(slots, shapes.length);
   },
 
   ADD_TO_SELECTION: function (slots) {
-    var shapes = [];
-    if (slots.color) {
-      shapes = shapesWithColor(slots.color);
-    } else if (slots.objectType && KIND_FOR_TYPE[slots.objectType]) {
-      shapes = shapesOfKind(KIND_FOR_TYPE[slots.objectType]);
+    if (!slots.color && !kindFromSlots(slots)) {
+      return 'say which shapes to add';
     }
+    var shapes = matchingShapes(slots);
     if (shapes.length === 0) {
       return 'nothing matched, so nothing was added';
     }
     addToSelection(shapes);
-    return 'added ' + describeCount(shapes.length) + ' to the selection';
+    return 'added ' + describeMatch(slots, shapes.length) + ' to the selection';
   },
 
   // --------------------------------------------------------------- transform
@@ -328,10 +414,28 @@ var HANDLERS = {
   },
 
   LOCK_LAYER: function (slots) {
+    var locking = (slots.lockState !== 'unlock');
+
+    // Unlocking has to work without a selection, because a locked shape cannot
+    // be clicked -- so once something is locked there is no way to select it
+    // and no way to say "unlock this". Without this branch, locking by voice
+    // is a one-way door. "Show" in TOGGLE_VISIBILITY has the same shape for
+    // the same reason: a hidden shape cannot be clicked either.
+    if (!locking && state.selection.length === 0) {
+      var locked = scene.querySelectorAll('[data-locked="true"]');
+      if (locked.length === 0) {
+        return 'nothing is locked';
+      }
+      for (var n = 0; n < locked.length; n++) {
+        locked[n].setAttribute('data-locked', 'false');
+      }
+      refreshSelection();
+      return 'unlocked ' + describeCount(locked.length);
+    }
+
     var problem = requireSelection();
     if (problem) return problem;
 
-    var locking = (slots.lockState !== 'unlock');
     for (var i = 0; i < state.selection.length; i++) {
       state.selection[i].setAttribute('data-locked', locking ? 'true' : 'false');
       // No dimming on the canvas -- a locked background would fade everything
