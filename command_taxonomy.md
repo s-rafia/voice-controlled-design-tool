@@ -1,53 +1,67 @@
-# Command Taxonomy — Voice-Controlled Design Tool
+# Command Taxonomy
 
-30 intent labels, 544 training phrases, ~18 phrases per label.
-Schema: `phrase,label` — `phrase` is what the user speaks, `label` is the command it
-maps to. (v1 used `text`; the training code must be updated to match.)
-All phrases lowercase, no punctuation — this matches what the
-Web Speech API returns from a live microphone, so training data and runtime input
-look the same.
+30 intent labels across 544 training phrases, 18 to 20 phrases per label.
 
-## Why these 30
+Schema: `phrase,label`, where `phrase` is what the user speaks and `label` is the
+command it maps to. All phrases are lowercase and unpunctuated, matching the form in
+which the Web Speech API returns a transcript, so that training data and runtime input
+have the same shape.
 
-The tool's premise is that the operations hardest to perform one-handed in Figma —
-panning while zooming, multi-select, layer reordering, alignment — should be
-available by voice. The taxonomy is organised around that, not around a full
-feature clone of Figma. Every label is an operation that either requires two hands,
-a modifier key, or a menu dive in a conventional design tool.
+---
 
-## Groups
+## Selection Criteria
 
-### Viewport (5) — changes what you see, never the design
+The premise of the tool is that canvas operations depending on a keyboard modifier held
+while the mouse acts should also be available by speech. Panning requires the space bar
+held while dragging. Multi-select requires shift held while clicking. A user who cannot
+hold a key and click simultaneously has no route to either.
+
+The taxonomy is organized around that constraint rather than around a full feature clone
+of an existing design tool. Multi-select is also a prerequisite for aligning, grouping,
+distributing and recoloring more than one object, so the labels covering those
+operations are included as consequences of the same restriction.
+
+---
+
+## Label Groups
+
+### Viewport (5)
+
+Changes what is visible. Never alters the design.
+
 | Label | Operation |
 |---|---|
-| `PAN` | Move the canvas/viewport in a direction |
+| `PAN` | Move the viewport in a direction |
 | `ZOOM_IN` | Increase zoom level |
 | `ZOOM_OUT` | Decrease zoom level |
 | `ZOOM_FIT` | Fit all content to the window |
-| `ZOOM_RESET` | Return to 100% / actual size |
+| `ZOOM_RESET` | Return to 100%, actual size |
 
 ### Selection (5)
+
 | Label | Operation |
 |---|---|
 | `SELECT_ALL` | Select every object on the canvas |
-| `DESELECT` | Clear the current selection |
-| `SELECT_BY_COLOR` | Select all objects of a named colour |
-| `SELECT_BY_TYPE` | Select all objects of a kind (text, image, rectangle…) |
-| `ADD_TO_SELECTION` | Add one more object to what is already selected |
+| `DESELECT` | Clear the current selection, or remove named objects from it |
+| `SELECT_BY_COLOR` | Select objects by color, optionally narrowed by shape kind |
+| `SELECT_BY_TYPE` | Select objects by kind (text, rectangle, circle, group) |
+| `ADD_TO_SELECTION` | Add further objects to the current selection |
 
-`SELECT_BY_COLOR` and `SELECT_BY_TYPE` are the accessibility payoff: they replace
-shift-click multi-select, which needs a modifier key held with one hand while the
-other clicks.
+`SELECT_BY_COLOR` and `SELECT_BY_TYPE` carry the accessibility purpose of the taxonomy.
+They replace shift-click multi-select, and the number of spoken commands required does
+not grow with the number of objects selected.
 
 ### Transform (4)
+
 | Label | Operation |
 |---|---|
-| `MOVE_OBJECT` | Move/nudge the selected object |
+| `MOVE_OBJECT` | Move or nudge the selection |
 | `RESIZE` | Scale the selection larger or smaller |
 | `ROTATE` | Rotate the selection |
 | `FLIP` | Mirror the selection horizontally or vertically |
 
-### Layers and structure (6)
+### Layers and Structure (6)
+
 | Label | Operation |
 |---|---|
 | `BRING_FORWARD` | Raise the selection in z-order |
@@ -58,36 +72,44 @@ other clicks.
 | `TOGGLE_VISIBILITY` | Show or hide a layer |
 
 ### Editing (4)
+
 `DUPLICATE`, `DELETE`, `UNDO`, `REDO`
 
 ### Arrangement (2)
+
 `ALIGN`, `DISTRIBUTE`
 
 ### Creation (2)
+
 `CREATE_SHAPE`, `CREATE_TEXT`
 
 ### Styling (2)
+
 `SET_FILL_COLOR`, `SET_OPACITY`
 
-## Changes from the original (v1) taxonomy
+---
 
-The original dataset was lost; this rebuild is reconstructed from the training code
-and extended. Three deliberate changes:
+## Changes from Version 1
 
-1. **`MOVE_UP` / `MOVE_DOWN` → `BRING_FORWARD` / `SEND_BACKWARD`.** In v1 those
-   labels meant z-order ("move this shape up one layer"), which collided
-   conceptually with moving an object up on the canvas. The rename removes the
-   ambiguity and frees `MOVE_OBJECT` for actual repositioning.
-2. **`SELECT_BY_COLOR` and `PAN` are in from the start.** In v1 both were bolted on
-   mid-training after the model confused them with neighbours, which meant
-   re-splitting and retraining.
-3. **The disambiguation phrases are training data, not patches.** Every confusable
-   pair now has minimal pairs present in the initial dataset.
+The version 1 dataset was lost to a drive failure. This taxonomy is a reconstruction
+from the surviving training code, with three deliberate changes.
 
-## Designed confusable pairs
+1. **`MOVE_UP` and `MOVE_DOWN` replaced by `BRING_FORWARD` and `SEND_BACKWARD`.** In
+   version 1 those labels denoted z-order, which collided conceptually with moving an
+   object upward on the canvas. The rename removes the ambiguity and leaves
+   `MOVE_OBJECT` for repositioning.
+2. **`SELECT_BY_COLOR` and `PAN` are present from the outset.** In version 1 both were
+   added mid-training after the model confused them with neighboring labels, which
+   required re-splitting and retraining.
+3. **Disambiguation phrases are part of the initial dataset rather than later patches.**
+   Every confusable pair below has minimal pairs present from the first training run.
 
-These are in the data on purpose. They are the cases a naive dataset gets wrong,
-and they are the interesting thing to report in a write-up.
+---
+
+## Designed Confusable Pairs
+
+These pairs are present in the data deliberately. They are the cases a dataset assembled
+without attention to label boundaries would misclassify.
 
 | Pair | Minimal example |
 |---|---|
@@ -101,17 +123,29 @@ and they are the interesting thing to report in a write-up.
 | `UNDO` vs `UNGROUP` | "undo that" / "undo this grouping" |
 | `DUPLICATE` vs `REDO` | "make another one of these" / "do that again" |
 
-## Held-out evaluation set
+---
 
-`hard_eval.csv` — 60 phrases, two per label, that appear nowhere in training and are
-weighted toward the pairs above. Accuracy on a random 15% split of the training data
-is inflated, because phrases within a label share vocabulary. This file is the number
-worth quoting.
+## Evaluation Sets
 
-## Not intents — slots
+Two sets are used.
 
-The classifier answers *what operation*, not *with what parameters*. "pan the canvas
-left" and "pan the canvas right" are both `PAN`; the direction is a slot, extracted
-separately by rule (see the project plan, Phase 2b). Keeping direction, colour and
-magnitude out of the label space is what keeps the label count at 30 instead of
-several hundred.
+The **test split** is a random 15% of the 544 training phrases, 82 phrases in total.
+
+The **held-out set**, `hard_eval.csv`, is 60 phrases, two per label, written separately
+and appearing nowhere in training. It is weighted toward the confusable pairs above.
+
+`hard_eval.csv` was written on the expectation that it would be the harder of the two,
+on the reasoning that phrases within a label share vocabulary and would inflate the
+random split. The measured results are the reverse: 93.3% on the held-out set against
+85.4% on the random split. The held-out set was written in the same register as the
+training data, which limits how far it tests generalization. See `RESULTS.md` and
+`LIMITATIONS.md`.
+
+---
+
+## Parameters Are Not Labels
+
+The classifier identifies the operation, not its parameters. "Pan the canvas left" and
+"pan the canvas right" are both `PAN`; direction is extracted separately by rule in
+`slot_extractor.js`. Keeping direction, color and magnitude out of the label space is
+what holds the label count at 30 rather than several hundred.
